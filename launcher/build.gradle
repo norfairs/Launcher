@@ -1,6 +1,22 @@
 plugins {
     id "com.github.johnrengelman.shadow"
-    id 'io.franzbecker.gradle-lombok'
+    id "io.franzbecker.gradle-lombok"
+}
+
+configurations {
+    jar.enabled = false
+    jar.dependsOn("shadowJar")
+}
+
+dependencies {
+    compile("javax.xml.bind:jaxb-api:2.2.4")
+    compile("com.fasterxml.jackson.core:jackson-databind:2.3.0")
+    compile("commons-lang:commons-lang:2.6")
+    compile("commons-io:commons-io:1.2")
+    compile("com.google.guava:guava:15.0")
+    compile("com.beust:jcommander:1.32")
+    compile("com.miglayout:miglayout:3.7.4")
+    compile("com.google.code.findbugs:jsr305:3.0.0")
 }
 
 jar {
@@ -9,26 +25,14 @@ jar {
     }
 }
 
-dependencies {
-    compile 'javax.xml.bind:jaxb-api:2.2.4'
-    compile 'com.fasterxml.jackson.core:jackson-databind:2.3.0'
-    compile 'commons-lang:commons-lang:2.6'
-    compile 'commons-io:commons-io:1.2'
-    compile 'com.google.guava:guava:15.0'
-    compile 'com.beust:jcommander:1.32'
-    compile 'com.miglayout:miglayout:3.7.4'
-    compile 'com.google.code.findbugs:jsr305:3.0.0'
-}
-
 processResources {
-    filesMatching('**/*.properties') {
+    filesMatching("**/*.properties") {
         filter {
-            it.replace('${project.version}', project.version)
+            it.replace("\${project.version}", "${project.version}")
         }
     }
 }
 
 shadowJar {
+    classifier = null
 }
-
-build.dependsOn(shadowJar)

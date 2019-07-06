@@ -1,5 +1,17 @@
 plugins {
     id "com.github.johnrengelman.shadow"
+    id "io.franzbecker.gradle-lombok"
+}
+
+configurations {
+    compileJava.dependsOn(":launcher:build")
+    jar.enabled = false
+    jar.dependsOn("shadowJar")
+}
+
+dependencies {
+    compile(project(path: ":launcher"))
+    compile("com.github.insubstantial:substance:7.3")
 }
 
 jar {
@@ -8,12 +20,6 @@ jar {
     }
 }
 
-dependencies {
-    compile project(':launcher')
-    compile 'com.github.insubstantial:substance:7.3'
-}
-
 shadowJar {
+    classifier = null
 }
-
-build.dependsOn(shadowJar)

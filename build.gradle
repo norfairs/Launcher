@@ -1,17 +1,6 @@
-buildscript {
-    repositories {
-        mavenCentral()
-        jcenter()
-    }
-
-    dependencies {
-    	classpath "com.github.jengelman.gradle.plugins:shadow:2.0.1"
-    }
-}
-
 plugins {
-    id "com.github.johnrengelman.shadow" version "2.0.1"
-    id 'io.franzbecker.gradle-lombok' version '1.11'
+    id "com.github.johnrengelman.shadow" version "4.0.4" apply false
+    id "io.franzbecker.gradle-lombok" version "3.1.0" apply false
 }
 
 println """
@@ -23,24 +12,22 @@ println """
 """
 
 subprojects {
-    apply plugin: 'java'
-    apply plugin: 'maven'
-
-    group = 'com.skcraft'
-    version = '4.3-SNAPSHOT'
+    apply plugin: "java"
 
     sourceCompatibility = 1.6
     targetCompatibility = 1.6
 
+    group = "com.skcraft"
+    version = "4.3-SNAPSHOT"
+
     repositories {
-        mavenCentral()
-        maven { url "http://repo.maven.apache.org/maven2" }
+        jcenter()
     }
 
     if (JavaVersion.current().isJava8Compatible()) {
         // Java 8 turns on doclint which we fail
         tasks.withType(Javadoc) {
-            options.addStringOption('Xdoclint:none', '-quiet')
+            options.addStringOption("Xdoclint:none", "-quiet")
         }
     }
 }

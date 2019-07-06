@@ -1,5 +1,18 @@
 plugins {
     id "com.github.johnrengelman.shadow"
+    id "io.franzbecker.gradle-lombok"
+}
+
+configurations {
+    compileJava.dependsOn(":launcher:build")
+    jar.enabled = false
+    jar.dependsOn("shadowJar")
+}
+
+dependencies {
+    compile(project(path: ":launcher"))
+    compile("org.tukaani:xz:1.0")
+    compile("org.apache.commons:commons-compress:1.9")
 }
 
 jar {
@@ -8,13 +21,6 @@ jar {
     }
 }
 
-dependencies {
-    compile project(':launcher')
-    compile 'org.tukaani:xz:1.0'
-    compile 'org.apache.commons:commons-compress:1.9'
-}
-
 shadowJar {
+    classifier = null
 }
-
-build.dependsOn(shadowJar)
