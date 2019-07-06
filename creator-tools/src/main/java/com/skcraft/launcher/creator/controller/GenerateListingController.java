@@ -31,6 +31,7 @@ import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -191,7 +192,7 @@ public class GenerateListingController {
                 .thenTap(() -> progress.set("Writing package listing to disk...", -1))
                 .thenApply(input -> {
                     try {
-                        Files.write(input, file, Charset.forName("UTF-8"));
+                        Files.asCharSink(file, StandardCharsets.UTF_8).write(input);
                         return file;
                     } catch (IOException e) {
                         throw new RuntimeException("Failed to write package listing file to disk", e);

@@ -36,6 +36,7 @@ import static com.skcraft.launcher.util.SharedLocale.tr;
 public class HttpDownloader implements Downloader {
 
     private final Random random = new Random();
+    @SuppressWarnings({"deprecation", "UnstableApiUsage"})
     private final HashFunction hf = Hashing.sha1();
 
     private final File tempDir;

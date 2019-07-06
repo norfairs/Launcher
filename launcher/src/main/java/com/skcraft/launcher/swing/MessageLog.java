@@ -206,24 +206,19 @@ public class MessageLog extends JPanel {
      * @param outputStream console stream to write to
      */
     private void consume(InputStream from, ConsoleOutputStream outputStream) {
-        final InputStream in = from;
-        final PrintWriter out = new PrintWriter(outputStream, true);
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
                 byte[] buffer = new byte[1024];
-                try {
+                try (InputStream inputStream = from; PrintWriter printWriter = new PrintWriter(outputStream, true)) {
                     int len;
-                    while ((len = in.read(buffer)) != -1) {
+                    while ((len = inputStream.read(buffer)) != -1) {
                         String s = new String(buffer, 0, len);
                         System.out.print(s);
-                        out.append(s);
-                        out.flush();
+                        printWriter.append(s);
+                        printWriter.flush();
                     }
                 } catch (IOException e) {
-                } finally {
-                    closeQuietly(in);
-                    closeQuietly(out);
                 }
             }
         });

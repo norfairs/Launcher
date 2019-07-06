@@ -47,7 +47,8 @@ public class TestServerBuilder {
         ResourceHandler resourceHandler = new ResourceHandler();
         resourceHandler.setDirectoriesListed(true);
         resourceHandler.setResourceBase(baseDir.getAbsolutePath());
-        resourceHandler.setMinMemoryMappedContentLength(-1); // Causes file locking on Windows
+        // Deprecated
+        // resourceHandler.setMinMemoryMappedContentLength(-1); // Causes file locking on Windows
 
         ContextHandler rootContext = new ContextHandler();
         rootContext.setContextPath("/");

@@ -319,15 +319,11 @@ public final class SwingHelper {
     }
 
     public static BufferedImage readBufferedImage(Class<?> clazz, String path) {
-        InputStream in = null;
-        try {
-            in = clazz.getResourceAsStream(path);
-            if (in != null) {
-                return ImageIO.read(in);
+        try (InputStream inputStream = clazz.getResourceAsStream(path)) {
+            if (inputStream != null) {
+                return ImageIO.read(inputStream);
             }
         } catch (IOException e) {
-        } finally {
-            closeQuietly(in);
         }
         return null;
     }

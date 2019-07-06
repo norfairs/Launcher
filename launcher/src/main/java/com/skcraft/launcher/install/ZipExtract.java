@@ -14,6 +14,7 @@ import lombok.Setter;
 import org.apache.commons.io.IOUtils;
 
 import java.io.*;
+import java.nio.file.Files;
 import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
@@ -78,18 +79,9 @@ public class ZipExtract implements Runnable {
     }
 
     private void writeEntry(ZipInputStream zis, File path) throws IOException {
-        FileOutputStream fos = null;
-        BufferedOutputStream bos = null;
-
-        try {
-            path.getParentFile().mkdirs();
-
-            fos = new FileOutputStream(path);
-            bos = new BufferedOutputStream(fos);
-            IOUtils.copy(zis, bos);
-        } finally {
-            closeQuietly(bos);
-            closeQuietly(fos);
+        try (OutputStream outputStream = new BufferedOutputStream(new FileOutputStream(path))) {
+            Files.createDirectories(path.toPath());
+            IOUtils.copy(zis, outputStream);
         }
     }
 

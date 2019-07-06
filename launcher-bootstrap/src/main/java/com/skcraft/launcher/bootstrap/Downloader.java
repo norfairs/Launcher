@@ -6,10 +6,11 @@
 
 package com.skcraft.launcher.bootstrap;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.skcraft.launcher.Bootstrap;
 import lombok.extern.java.Log;
-import org.json.simple.JSONObject;
-import org.json.simple.JSONValue;
 
 import javax.swing.*;
 import java.io.File;
@@ -75,11 +76,11 @@ public class Downloader implements Runnable, ProgressObservable {
                     .returnContent()
                     .asString("UTF-8");
 
-            Object object = JSONValue.parse(data);
+            JsonElement jsonElement = new JsonParser().parse(data);
             URL url;
 
-            if (object instanceof JSONObject) {
-                String rawUrl = String.valueOf(((JSONObject) object).get("url"));
+            if (jsonElement instanceof JsonObject) {
+                String rawUrl = jsonElement.getAsJsonObject().get("url").getAsString();
                 if (rawUrl != null) {
                     url = HttpRequest.url(rawUrl.trim());
                 } else {

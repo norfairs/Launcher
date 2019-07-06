@@ -30,6 +30,7 @@ import static com.skcraft.launcher.LauncherUtils.concat;
 @EqualsAndHashCode(callSuper = false)
 public class FileInstall extends ManifestEntry {
 
+    @SuppressWarnings({"deprecation", "UnstableApiUsage"})
     private static HashFunction hf = Hashing.sha1();
     private String version;
     private String hash;
@@ -83,7 +84,7 @@ public class FileInstall extends ManifestEntry {
         }
 
         if (hash != null) {
-            String existingHash = Files.hash(targetFile, hf).toString();
+            String existingHash = Files.asByteSource(targetFile).hash(hf).toString();
             if (existingHash.equalsIgnoreCase(hash)) {
                 return false;
             }

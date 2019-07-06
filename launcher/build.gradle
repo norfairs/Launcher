@@ -9,14 +9,15 @@ configurations {
 }
 
 dependencies {
-    compile("javax.xml.bind:jaxb-api:2.2.4")
-    compile("com.fasterxml.jackson.core:jackson-databind:2.3.0")
-    compile("commons-lang:commons-lang:2.6")
-    compile("commons-io:commons-io:1.2")
-    compile("com.google.guava:guava:15.0")
-    compile("com.beust:jcommander:1.32")
-    compile("com.miglayout:miglayout:3.7.4")
-    compile("com.google.code.findbugs:jsr305:3.0.0")
+    compile("com.beust:jcommander:1.72")
+    compile("com.fasterxml.jackson.core:jackson-databind:2.9.9")
+    compile("com.google.guava:guava:28.0-jre")
+    compile("com.miglayout:miglayout-swing:5.2")
+    compile("commons-io:commons-io:2.6")
+    compile("javax.xml.bind:jaxb-api:2.3.1")
+    compile("org.checkerframework:checker-qual:2.9.0")
+    compile("org.apache.commons:commons-lang3:3.9")
+    compile("org.apache.commons:commons-text:1.7")
 }
 
 jar {

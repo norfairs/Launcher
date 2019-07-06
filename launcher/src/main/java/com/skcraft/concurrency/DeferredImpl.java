@@ -56,7 +56,7 @@ class DeferredImpl<I> implements Deferred<I> {
                 task.run();
                 return null;
             }
-        }), defaultExecutor);
+        }, executor), defaultExecutor);
     }
 
     @Override

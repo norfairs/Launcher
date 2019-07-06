@@ -27,7 +27,7 @@ public final class Deferreds {
      * @return A new Deferred
      */
     public static <V> Deferred<V> makeDeferred(ListenableFuture<V> future) {
-        return makeDeferred(future, MoreExecutors.sameThreadExecutor());
+        return makeDeferred(future, MoreExecutors.newDirectExecutorService());
     }
 
     /**

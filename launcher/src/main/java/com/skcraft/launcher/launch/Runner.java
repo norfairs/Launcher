@@ -26,7 +26,7 @@ import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
 import lombok.extern.java.Log;
-import org.apache.commons.lang.text.StrSubstitutor;
+import org.apache.commons.text.StringSubstitutor;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -272,7 +272,7 @@ public class Runner implements Callable<Process>, ProgressObservable {
         List<String> args = builder.getArgs();
 
         String[] rawArgs = versionManifest.getMinecraftArguments().split(" +");
-        StrSubstitutor substitutor = new StrSubstitutor(getCommandSubstitutions());
+        StringSubstitutor substitutor = new StringSubstitutor(getCommandSubstitutions());
         for (String arg : rawArgs) {
             args.add(substitutor.replace(arg));
         }

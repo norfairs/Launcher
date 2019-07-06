@@ -17,10 +17,10 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 import java.io.*;
 import java.net.*;
+import java.nio.file.Files;
 import java.util.*;
 
 import static com.skcraft.launcher.LauncherUtils.checkInterrupted;
-import static org.apache.commons.io.IOUtils.closeQuietly;
 
 /**
  * A simple fluent interface for performing HTTP requests that uses
@@ -226,17 +226,8 @@ public class HttpRequest implements Closeable, ProgressObservable {
      * @throws InterruptedException on interruption
      */
     public HttpRequest saveContent(File file) throws IOException, InterruptedException {
-        FileOutputStream fos = null;
-        BufferedOutputStream bos = null;
-
-        try {
-            fos = new FileOutputStream(file);
-            bos = new BufferedOutputStream(fos);
-
-            saveContent(bos);
-        } finally {
-            closeQuietly(bos);
-            closeQuietly(fos);
+        try (OutputStream outputStream = new BufferedOutputStream(new FileOutputStream(file))) {
+            saveContent(outputStream);
         }
 
         return this;
@@ -500,19 +491,9 @@ public class HttpRequest implements Closeable, ProgressObservable {
          * @throws InterruptedException on interruption
          */
         public BufferedResponse saveContent(File file) throws IOException, InterruptedException {
-            FileOutputStream fos = null;
-            BufferedOutputStream bos = null;
-
-            file.getParentFile().mkdirs();
-
-            try {
-                fos = new FileOutputStream(file);
-                bos = new BufferedOutputStream(fos);
-
-                saveContent(bos);
-            } finally {
-                closeQuietly(bos);
-                closeQuietly(fos);
+            try (OutputStream outputStream = new BufferedOutputStream(new FileOutputStream(file))) {
+                Files.createDirectories(file.toPath());
+                saveContent(outputStream);
             }
 
             return this;

@@ -17,7 +17,6 @@ import com.google.common.collect.Lists;
 import com.google.common.io.ByteStreams;
 import com.google.common.io.CharStreams;
 import com.google.common.io.Closer;
-import com.google.common.io.Files;
 import com.skcraft.launcher.Launcher;
 import com.skcraft.launcher.LauncherUtils;
 import com.skcraft.launcher.model.loader.InstallProfile;
@@ -33,6 +32,7 @@ import lombok.extern.java.Log;
 
 import java.io.*;
 import java.net.URL;
+import java.nio.file.Files;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Properties;
@@ -196,8 +196,8 @@ public class PackageBuilder {
                         Library library = new Library();
                         library.setName(libraryPath);
                         File extractPath = new File(librariesDir, library.getPath(Environment.getInstance()));
-                        Files.createParentDirs(extractPath);
-                        ByteStreams.copy(closer.register(jarFile.getInputStream(libraryEntry)), Files.newOutputStreamSupplier(extractPath));
+                        Files.createDirectories(extractPath.toPath());
+                        ByteStreams.copy(closer.register(jarFile.getInputStream(libraryEntry)), Files.newOutputStream(extractPath.toPath()));
                     } else {
                         log.warning("Could not find the file '" + filePath + "' in " + file.getAbsolutePath() + ", which means that this mod loader will not work correctly");
                     }
@@ -222,7 +222,7 @@ public class PackageBuilder {
             File outputPath = new File(librariesDir, library.getPath(env));
 
             if (!outputPath.exists()) {
-                Files.createParentDirs(outputPath);
+                Files.createDirectories(outputPath.toPath());
                 boolean found = false;
 
                 // Gather a list of repositories to download from
@@ -329,7 +329,7 @@ public class PackageBuilder {
 
     private static BuilderOptions parseArgs(String[] args) {
         BuilderOptions options = new BuilderOptions();
-        new JCommander(options, args);
+        new JCommander(options).parse(args);
         options.choosePaths();
         return options;
     }
