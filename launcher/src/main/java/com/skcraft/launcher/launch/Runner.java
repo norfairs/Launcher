@@ -373,6 +373,9 @@ public class Runner implements Callable<Process>, ProgressObservable {
         map.put("assets_root", launcher.getAssets().getDir().getAbsolutePath());
         map.put("assets_index_name", versionManifest.getAssetsIndex());
 
+        // Creation Reborn
+        map.put("version_type", versionManifest.getType());
+
         return map;
     }
 

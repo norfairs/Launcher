@@ -20,6 +20,7 @@ import lombok.extern.java.Log;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.Border;
+import javax.swing.plaf.ColorUIResource;
 import javax.swing.plaf.basic.BasicSplitPaneDivider;
 import javax.swing.plaf.basic.BasicSplitPaneUI;
 import javax.swing.text.JTextComponent;
@@ -453,5 +454,10 @@ public final class SwingHelper {
         UIManager.getDefaults().put("SplitPane.border", BorderFactory.createEmptyBorder());
         System.setProperty("com.apple.mrj.application.apple.menu.about.name", appName);
         System.setProperty("apple.laf.useScreenMenuBar", "true");
+
+        // Creation Reborn
+        UIManager.getDefaults().put("Button.focus", new ColorUIResource(new Color(0, 0, 0, 0)));
+        UIManager.getDefaults().put("CheckBox.focus", new ColorUIResource(new Color(0, 0, 0, 0)));
+        UIManager.getDefaults().put("TabbedPane.focus", new ColorUIResource(new Color(0, 0, 0, 0)));
     }
 }

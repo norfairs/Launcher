@@ -8,6 +8,7 @@ package com.skcraft.launcher.swing;
 
 import com.skcraft.launcher.LauncherUtils;
 import lombok.extern.java.Log;
+import net.creationreborn.launcher.util.Toolbox;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -248,6 +249,9 @@ public final class WebpagePanel extends JPanel {
 
             try {
                 conn = (HttpURLConnection) url.openConnection();
+                // Creation Reborn
+                conn.setRequestProperty("User-Agent", Toolbox.USER_AGENT);
+
                 conn.setRequestMethod("GET");
                 conn.setUseCaches(false);
                 conn.setDoInput(true);
