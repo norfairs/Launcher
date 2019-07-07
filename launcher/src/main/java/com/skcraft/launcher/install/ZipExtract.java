@@ -79,8 +79,8 @@ public class ZipExtract implements Runnable {
     }
 
     private void writeEntry(ZipInputStream zis, File path) throws IOException {
+        Files.createDirectories(path.getParentFile().toPath());
         try (OutputStream outputStream = new BufferedOutputStream(new FileOutputStream(path))) {
-            Files.createDirectories(path.toPath());
             IOUtils.copy(zis, outputStream);
         }
     }

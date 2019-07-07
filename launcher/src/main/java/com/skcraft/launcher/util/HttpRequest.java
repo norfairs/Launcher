@@ -491,8 +491,8 @@ public class HttpRequest implements Closeable, ProgressObservable {
          * @throws InterruptedException on interruption
          */
         public BufferedResponse saveContent(File file) throws IOException, InterruptedException {
+            Files.createDirectories(file.getParentFile().toPath());
             try (OutputStream outputStream = new BufferedOutputStream(new FileOutputStream(file))) {
-                Files.createDirectories(file.toPath());
                 saveContent(outputStream);
             }
 
