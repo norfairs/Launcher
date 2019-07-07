@@ -19,8 +19,6 @@ import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
-import static org.apache.commons.io.IOUtils.closeQuietly;
-
 public class ZipExtract implements Runnable {
 
     @Getter private final ByteSource source;

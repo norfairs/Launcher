@@ -41,7 +41,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.logging.Level;
 
 import static com.skcraft.launcher.util.SharedLocale.tr;
-import static org.apache.commons.io.IOUtils.closeQuietly;
 
 /**
  * Swing utility methods.

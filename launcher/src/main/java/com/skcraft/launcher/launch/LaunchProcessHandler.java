@@ -8,7 +8,6 @@ package com.skcraft.launcher.launch;
 
 import com.google.common.base.Function;
 import com.skcraft.launcher.Launcher;
-import com.skcraft.launcher.dialog.LauncherFrame;
 import com.skcraft.launcher.dialog.ProcessConsoleFrame;
 import com.skcraft.launcher.swing.MessageLog;
 import lombok.NonNull;

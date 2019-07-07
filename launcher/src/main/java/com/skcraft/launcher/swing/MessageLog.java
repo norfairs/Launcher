@@ -6,7 +6,6 @@
 
 package com.skcraft.launcher.swing;
 
-import com.skcraft.launcher.LauncherUtils;
 import com.skcraft.launcher.util.LimitLinesDocumentListener;
 import com.skcraft.launcher.util.SimpleLogFormatter;
 
@@ -21,8 +20,6 @@ import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
-
-import static org.apache.commons.io.IOUtils.closeQuietly;
 
 /**
  * A simple message log.
