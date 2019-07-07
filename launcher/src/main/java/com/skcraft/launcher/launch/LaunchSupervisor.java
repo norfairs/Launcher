@@ -14,7 +14,6 @@ import com.skcraft.concurrency.ObservableFuture;
 import com.skcraft.launcher.Instance;
 import com.skcraft.launcher.Launcher;
 import com.skcraft.launcher.auth.Session;
-import com.skcraft.launcher.dialog.LoginDialog;
 import com.skcraft.launcher.dialog.ProgressDialog;
 import com.skcraft.launcher.launch.LaunchOptions.UpdatePolicy;
 import com.skcraft.launcher.persistence.Persistence;
@@ -23,6 +22,7 @@ import com.skcraft.launcher.update.Updater;
 import com.skcraft.launcher.util.SharedLocale;
 import com.skcraft.launcher.util.SwingExecutor;
 import lombok.extern.java.Log;
+import net.creationreborn.launcher.util.Toolbox;
 import org.apache.commons.io.FileUtils;
 
 import javax.swing.*;
@@ -61,7 +61,9 @@ public class LaunchSupervisor {
             if (options.getSession() != null) {
                 session = options.getSession();
             } else {
-                session = LoginDialog.showLoginRequest(window, launcher);
+                // Creation Reborn
+                // session = LoginDialog.showLoginRequest(window, launcher);
+                session = Toolbox.getSession(window, launcher);
                 if (session == null) {
                     return;
                 }

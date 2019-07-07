@@ -59,7 +59,10 @@ public class LoginDialog extends JDialog {
         super(owner, ModalityType.DOCUMENT_MODAL);
 
         this.launcher = launcher;
-        this.accounts = launcher.getAccounts();
+
+        // Creation Reborn
+        // this.accounts = launcher.getAccounts();
+        this.accounts = null;
 
         setTitle(SharedLocale.tr("login.title"));
         initComponents();

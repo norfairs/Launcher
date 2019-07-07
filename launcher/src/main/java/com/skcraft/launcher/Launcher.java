@@ -12,7 +12,6 @@ import com.google.common.base.Strings;
 import com.google.common.base.Supplier;
 import com.google.common.util.concurrent.ListeningExecutorService;
 import com.google.common.util.concurrent.MoreExecutors;
-import com.skcraft.launcher.auth.AccountList;
 import com.skcraft.launcher.auth.LoginService;
 import com.skcraft.launcher.auth.YggdrasilLoginService;
 import com.skcraft.launcher.launch.LaunchSupervisor;
@@ -28,6 +27,7 @@ import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
 import lombok.extern.java.Log;
+import net.creationreborn.launcher.auth.AccountList;
 import org.apache.commons.io.FileUtils;
 
 import javax.swing.*;
@@ -93,13 +93,16 @@ public final class Launcher {
         this.instances = new InstanceList(this);
         this.assets = new AssetsRoot(new File(baseDir, "assets"));
         this.config = Persistence.load(new File(configDir, "config.json"), Configuration.class);
-        this.accounts = Persistence.load(new File(configDir, "accounts.dat"), AccountList.class);
+        // Creation Reborn
+        this.accounts = Persistence.load(new File(configDir, "accounts.json"), AccountList.class);
 
         setDefaultConfig();
 
+        /*
         if (accounts.getSize() > 0) {
             accounts.setSelectedItem(accounts.getElementAt(0));
         }
+        */
 
         executor.submit(new Runnable() {
             @Override
