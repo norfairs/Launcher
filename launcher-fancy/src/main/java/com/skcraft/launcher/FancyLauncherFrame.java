@@ -10,6 +10,7 @@ import com.skcraft.launcher.dialog.LauncherFrame;
 import com.skcraft.launcher.swing.SwingHelper;
 import com.skcraft.launcher.swing.WebpagePanel;
 import lombok.NonNull;
+import net.creationreborn.launcher.FancyBackgroundPanel;
 
 import javax.swing.*;
 
@@ -33,6 +34,7 @@ public class FancyLauncherFrame extends LauncherFrame {
 
     @Override
     protected JPanel createContainerPanel() {
+        // Creation Reborn
         return new FancyBackgroundPanel();
     }
 
