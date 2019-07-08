@@ -17,8 +17,8 @@
 package net.creationreborn.launcher.bootstrap.util;
 
 import com.skcraft.launcher.bootstrap.SharedLocale;
+import com.skcraft.launcher.bootstrap.SwingHelper;
 
-import javax.swing.JOptionPane;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -50,15 +50,12 @@ public class Toolbox {
         Path path = getPath("LolnetData");
         if (Files.exists(path)) {
             LOGGER.info("Detected legacy launcher: " + path.toAbsolutePath().toString());
-
-            int selectedOption = JOptionPane.showConfirmDialog(
+            boolean result = SwingHelper.confirmDialog(
                     null,
                     SharedLocale.tr("legacy.message"),
-                    SharedLocale.tr("legacy.title"),
-                    JOptionPane.YES_NO_OPTION,
-                    JOptionPane.QUESTION_MESSAGE);
+                    SharedLocale.tr("legacy.title"));
 
-            if (selectedOption == 0) {
+            if (result) {
                 if (deleteDirectory(path)) {
                     LOGGER.info("Successfully deleted legacy launcher");
                 } else {
