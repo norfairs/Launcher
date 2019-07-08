@@ -39,6 +39,10 @@ public class Bootstrap {
 
     public static void main(String[] args) throws Throwable {
         SimpleLogFormatter.configureGlobalLogger();
+
+        // Creation Reborn
+        Toolbox.setAppName("Creation Reborn Bootstrap");
+
         SharedLocale.loadBundle("com.skcraft.launcher.lang.Bootstrap", Locale.getDefault());
 
         boolean portable = isPortableMode();

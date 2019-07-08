@@ -27,13 +27,17 @@ import net.creationreborn.launcher.dialog.ProfileSelectionDialog;
 import net.creationreborn.launcher.integration.mojang.yggdrasil.User;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
+import java.awt.Toolkit;
 import java.awt.Window;
+import java.lang.reflect.Field;
 import java.util.concurrent.Executor;
 import java.util.function.Consumer;
+import java.util.logging.Logger;
 
 public class Toolbox {
 
     public static final String USER_AGENT = "Mozilla/5.0 (Java) CRLauncher";
+    private static final Logger LOGGER = Logger.getLogger(Toolbox.class.getName());
 
     public static Session getSession(Window window, Launcher launcher) {
         if (launcher.getAccounts().getSize() > 0) {
@@ -52,6 +56,18 @@ public class Toolbox {
 
         loginDialog.setVisible(true);
         return loginDialog.getSession();
+    }
+
+    public static void setAppName(String name) {
+        try {
+            Toolkit toolkit = Toolkit.getDefaultToolkit();
+
+            Field field = toolkit.getClass().getDeclaredField("awtAppClassName");
+            field.setAccessible(true);
+            field.set(toolkit, name);
+        } catch (Exception ex) {
+            LOGGER.warning("Failed to set awtAppClassName");
+        }
     }
 
     @SuppressWarnings("UnstableApiUsage")

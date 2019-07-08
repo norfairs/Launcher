@@ -19,8 +19,10 @@ package net.creationreborn.launcher.bootstrap.util;
 import com.skcraft.launcher.bootstrap.SharedLocale;
 import com.skcraft.launcher.bootstrap.SwingHelper;
 
+import java.awt.Toolkit;
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -84,5 +86,17 @@ public class Toolbox {
         }
 
         return Paths.get(name);
+    }
+
+    public static void setAppName(String name) {
+        try {
+            Toolkit toolkit = Toolkit.getDefaultToolkit();
+
+            Field field = toolkit.getClass().getDeclaredField("awtAppClassName");
+            field.setAccessible(true);
+            field.set(toolkit, name);
+        } catch (Exception ex) {
+            LOGGER.warning("Failed to set awtAppClassName");
+        }
     }
 }

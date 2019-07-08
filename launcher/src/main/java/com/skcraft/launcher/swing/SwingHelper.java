@@ -16,6 +16,7 @@ import com.skcraft.launcher.util.SharedLocale;
 import com.skcraft.launcher.util.SwingExecutor;
 import lombok.NonNull;
 import lombok.extern.java.Log;
+import net.creationreborn.launcher.util.Toolbox;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -456,6 +457,7 @@ public final class SwingHelper {
         System.setProperty("apple.laf.useScreenMenuBar", "true");
 
         // Creation Reborn
+        Toolbox.setAppName(appName);
         UIManager.getDefaults().put("Button.focus", new ColorUIResource(new Color(0, 0, 0, 0)));
         UIManager.getDefaults().put("CheckBox.focus", new ColorUIResource(new Color(0, 0, 0, 0)));
         UIManager.getDefaults().put("TabbedPane.focus", new ColorUIResource(new Color(0, 0, 0, 0)));
