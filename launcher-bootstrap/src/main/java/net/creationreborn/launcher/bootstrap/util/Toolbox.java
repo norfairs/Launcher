@@ -34,6 +34,14 @@ public class Toolbox {
     public static final String USER_AGENT = "Mozilla/5.0 (Java) CRLauncher";
     private static final Logger LOGGER = Logger.getLogger(Toolbox.class.getName());
 
+    public static boolean containsIgnoreCase(String string, String searchString) {
+        return string.toLowerCase().contains(searchString.toLowerCase());
+    }
+
+    public static boolean startsWithIgnoreCase(String string, String searchString) {
+        return string.toLowerCase().startsWith(searchString.toLowerCase());
+    }
+
     public static boolean deleteDirectory(Path path) {
         try {
             Files.walk(path)
@@ -72,15 +80,15 @@ public class Toolbox {
         String userHome = System.getProperty("user.home");
 
         if (osName != null && userHome != null) {
-            if (osName.startsWith("Linux")) {
+            if (containsIgnoreCase(osName, "BSD") || containsIgnoreCase(osName, "Linux") || containsIgnoreCase(osName, "Unix")) {
                 return Paths.get(userHome, name);
             }
 
-            if (osName.startsWith("MacOS")) {
+            if (startsWithIgnoreCase(osName, "Mac OS")) {
                 return Paths.get(userHome, "Library", "Application Support", name);
             }
 
-            if (osName.startsWith("Windows")) {
+            if (startsWithIgnoreCase(osName, "Windows")) {
                 return Paths.get(userHome, "AppData", "Roaming", name);
             }
         }
