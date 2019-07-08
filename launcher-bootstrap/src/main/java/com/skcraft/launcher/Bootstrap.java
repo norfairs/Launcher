@@ -9,6 +9,7 @@ package com.skcraft.launcher;
 import com.skcraft.launcher.bootstrap.*;
 import lombok.Getter;
 import lombok.extern.java.Log;
+import net.creationreborn.launcher.bootstrap.util.Toolbox;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileSystemView;
@@ -56,7 +57,9 @@ public class Bootstrap {
     public Bootstrap(boolean portable, String[] args) throws IOException {
         this.properties = BootstrapUtils.loadProperties(Bootstrap.class, "bootstrap.properties");
 
-        File baseDir = portable ? new File(".") : getUserLauncherDir();
+        // Creation Reborn
+        // File baseDir = portable ? new File(".") : getUserLauncherDir();
+        File baseDir = portable ? new File(".") : Toolbox.getPath("CRLauncher").toFile();
 
         this.baseDir = baseDir;
         this.portable = portable;

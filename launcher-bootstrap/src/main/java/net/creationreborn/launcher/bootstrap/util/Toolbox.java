@@ -16,7 +16,31 @@
 
 package net.creationreborn.launcher.bootstrap.util;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
 public class Toolbox {
 
     public static final String USER_AGENT = "Mozilla/5.0 (Java) CRLauncher";
+
+    public static Path getPath(String name) {
+        String osName = System.getProperty("os.name");
+        String userHome = System.getProperty("user.home");
+
+        if (osName != null && userHome != null) {
+            if (osName.startsWith("Linux")) {
+                return Paths.get(userHome, name);
+            }
+
+            if (osName.startsWith("MacOS")) {
+                return Paths.get(userHome, "Library", "Application Support", name);
+            }
+
+            if (osName.startsWith("Windows")) {
+                return Paths.get(userHome, "AppData", "Roaming", name);
+            }
+        }
+
+        return Paths.get(name);
+    }
 }
