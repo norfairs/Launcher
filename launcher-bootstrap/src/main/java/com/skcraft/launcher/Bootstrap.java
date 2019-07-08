@@ -82,6 +82,9 @@ public class Bootstrap {
                 file.delete();
             }
         }
+
+        // Creation Reborn
+        Toolbox.detectLegacy();
     }
 
     public void launch() throws Throwable {

@@ -16,12 +16,57 @@
 
 package net.creationreborn.launcher.bootstrap.util;
 
+import com.skcraft.launcher.bootstrap.SharedLocale;
+
+import javax.swing.JOptionPane;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Comparator;
+import java.util.logging.Logger;
 
 public class Toolbox {
 
     public static final String USER_AGENT = "Mozilla/5.0 (Java) CRLauncher";
+    private static final Logger LOGGER = Logger.getLogger(Toolbox.class.getName());
+
+    public static boolean deleteDirectory(Path path) {
+        try {
+            Files.walk(path)
+                    .map(Path::toFile)
+                    .sorted(Comparator.reverseOrder())
+                    .forEach(File::delete);
+
+            return true;
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            return false;
+        }
+    }
+
+    public static void detectLegacy() {
+        Path path = getPath("LolnetData");
+        if (Files.exists(path)) {
+            LOGGER.info("Detected legacy launcher: " + path.toAbsolutePath().toString());
+
+            int selectedOption = JOptionPane.showConfirmDialog(
+                    null,
+                    SharedLocale.tr("legacy.message"),
+                    SharedLocale.tr("legacy.title"),
+                    JOptionPane.YES_NO_OPTION,
+                    JOptionPane.QUESTION_MESSAGE);
+
+            if (selectedOption == 0) {
+                if (deleteDirectory(path)) {
+                    LOGGER.info("Successfully deleted legacy launcher");
+                } else {
+                    LOGGER.warning("Failed to delete legacy launcher");
+                }
+            }
+        }
+    }
 
     public static Path getPath(String name) {
         String osName = System.getProperty("os.name");
