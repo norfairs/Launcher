@@ -14,6 +14,8 @@ import com.skcraft.launcher.install.Installer;
 import com.skcraft.launcher.install.UpdateCache;
 import lombok.Data;
 import lombok.ToString;
+import net.creationreborn.launcher.model.modpack.FileInstall;
+import net.creationreborn.launcher.model.modpack.ZipFileInstall;
 
 import java.io.File;
 
@@ -23,7 +25,9 @@ import java.io.File;
         property = "type",
         defaultImpl = FileInstall.class)
 @JsonSubTypes({
-        @JsonSubTypes.Type(value = FileInstall.class, name = "file")
+        // Creation Reborn
+        @JsonSubTypes.Type(value = FileInstall.class, name = "file"),
+        @JsonSubTypes.Type(value = ZipFileInstall.class, name = "zip_file")
 })
 @Data
 @ToString(exclude = "manifest")
