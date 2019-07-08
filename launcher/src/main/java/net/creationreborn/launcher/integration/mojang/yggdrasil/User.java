@@ -24,6 +24,8 @@ import java.util.Objects;
         value = {
                 "email",
                 "registerIp",
+                "migratedFrom",
+                "migratedAt",
                 "registeredAt",
                 "passwordChangedAt",
                 "dateOfBirth",
@@ -35,10 +37,13 @@ import java.util.Objects;
                 "legacyUser",
                 "emailSubscriptionStatus",
                 "emailSubscriptionKey",
+                "properties",
                 "verifiedByParent",
+                "migrationId",
                 "hashed",
                 "fromMigratedUser"
         },
+        ignoreUnknown = true,
         allowSetters = true
 )
 public class User {
@@ -47,6 +52,8 @@ public class User {
     private String email;
     private String username;
     private String registerIp;
+    private String migratedFrom;
+    private long migratedAt;
     private long registeredAt;
     private long passwordChangedAt;
     private long dateOfBirth;
@@ -59,6 +66,7 @@ public class User {
     private String emailSubscriptionStatus;
     private String emailSubscriptionKey;
     private boolean verifiedByParent;
+    private String migrationId;
     private boolean hashed;
     private boolean fromMigratedUser;
 
