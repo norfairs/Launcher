@@ -171,7 +171,7 @@ public final class SwingHelper {
                 SwingUtilities.invokeAndWait(new Runnable() {
                     @Override
                     public void run() {
-                        yesSelected.set(confirmDialog(parentComponent, title, message));
+                        yesSelected.set(confirmDialog(parentComponent, message, title));
                     }
                 });
             } catch (InterruptedException e) {
