@@ -8,6 +8,7 @@ package com.skcraft.launcher.bootstrap;
 
 import lombok.Getter;
 import lombok.extern.java.Log;
+import net.creationreborn.launcher.bootstrap.util.Toolbox;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -96,6 +97,8 @@ public class HttpRequest implements Closeable, ProgressObservable {
             }
 
             conn = (HttpURLConnection) reformat(url).openConnection();
+            // Creation Reborn
+            conn.setRequestProperty("User-Agent", Toolbox.USER_AGENT);
 
             if (body != null) {
                 conn.setRequestProperty("Content-Type", contentType);
