@@ -67,6 +67,12 @@ public class BuilderOptions {
     @Parameter(names = "--pretty-print")
     private boolean prettyPrinting;
 
+    // Creation Reborn
+    @Parameter(names = "--base-url")
+    private String baseUrl;
+    @Parameter(names = {"--curseforge", "--curse"})
+    private String curse;
+
     public void choosePaths() throws ParameterException {
         if (configPath == null) {
             requireInputPath("--config");

@@ -25,6 +25,7 @@ import net.creationreborn.launcher.auth.Account;
 import net.creationreborn.launcher.dialog.LoginDialog;
 import net.creationreborn.launcher.dialog.ProfileSelectionDialog;
 import net.creationreborn.launcher.integration.mojang.yggdrasil.User;
+import org.apache.commons.lang3.RegExUtils;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.awt.Toolkit;
@@ -38,6 +39,16 @@ public class Toolbox {
 
     public static final String USER_AGENT = "Mozilla/5.0 (Java) CRLauncher";
     private static final Logger LOGGER = Logger.getLogger(Toolbox.class.getName());
+
+    /**
+     * Removes non-printable characters (excluding new line and carriage return) in the provided {@link java.lang.String String}.
+     *
+     * @param string The {@link java.lang.String String} to filter.
+     * @return The filtered {@link java.lang.String String}.
+     */
+    public static String filter(String string) {
+        return RegExUtils.replaceAll(string, "[^\\x20-\\x7E\\x0A\\x0D]", "");
+    }
 
     public static Session getSession(Window window, Launcher launcher) {
         if (launcher.getAccounts().getSize() > 0) {
