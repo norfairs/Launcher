@@ -16,6 +16,7 @@
 
 package net.creationreborn.launcher.model.modpack;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.base.Preconditions;
 import com.skcraft.launcher.install.InstallLog;
@@ -31,6 +32,7 @@ import java.net.URL;
 public class FileInstall extends ManifestEntry {
 
     @JsonProperty
+    @JsonInclude(value = JsonInclude.Include.NON_NULL)
     private String destination;
 
     @JsonProperty
