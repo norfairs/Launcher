@@ -64,7 +64,8 @@ public class Builder {
     public void processCurse(Manifest manifest, String source) {
         try {
             CurseIntegration curse = new CurseIntegration();
-            curse.prepare(options.getOutputPath(), mapper, source);
+            ManifestEntry manifestEntry = curse.prepare(options.getOutputPath(), mapper, source);
+            manifest.getTasks().add(manifestEntry);
             curse.downloadLoaders(options.getLoadersDir());
 
             manifest.setName(Toolbox.filter(curse.getName())

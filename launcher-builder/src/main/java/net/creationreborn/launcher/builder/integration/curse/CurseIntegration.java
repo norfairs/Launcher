@@ -26,15 +26,19 @@ import net.creationreborn.launcher.builder.integration.curse.manifest.ModLoader;
 import net.creationreborn.launcher.builder.integration.curse.meta.Metadata;
 import net.creationreborn.launcher.install.ZipExtract;
 import net.creationreborn.launcher.model.modpack.FileInstall;
+import net.creationreborn.launcher.model.modpack.ZipFileInstall;
+import net.creationreborn.launcher.util.Toolbox;
 import org.apache.commons.compress.utils.Lists;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.net.URLDecoder;
 import java.util.List;
 
 import static net.creationreborn.launcher.builder.Builder.LOGGER;
@@ -46,14 +50,29 @@ public class CurseIntegration {
     private static final String FORGE_URL = "https://files.minecraftforge.net/maven";
     private Manifest manifest;
 
-    public void prepare(File directory, ObjectMapper mapper, String source) throws Exception {
-        URL url = filterURL(source);
+    public ManifestEntry prepare(File directory, ObjectMapper mapper, String source) throws Exception {
+        URL url = resolveURL(filterURL(source));
+        if (url == null) {
+            throw new RuntimeException("Failed to resolve " + source);
+        }
 
         LOGGER.info("Prepare Curse: " + url.toExternalForm());
         File packFile = new File(directory, "pack.zip");
 
         LOGGER.info("Downloading to " + packFile.getAbsolutePath());
-        HttpRequest.get(url).execute().expectResponseCode(200).saveContent(packFile);
+        HttpURLConnection httpURLConnection = createHttpURLConnection(url);
+        int responseCode = httpURLConnection.getResponseCode();
+        if (responseCode != 200) {
+            throw new IOException("Did not get expected response code, got " + responseCode + " for " + url);
+        }
+
+        long size = Files.asByteSink(packFile).writeFrom(httpURLConnection.getInputStream());
+
+        ZipFileInstall zipFileInstall = new ZipFileInstall();
+        zipFileInstall.setDestination("");
+        zipFileInstall.getExtracts().put("(overrides/)(.*)", "$2");
+        zipFileInstall.setSize(size);
+        zipFileInstall.setUrl(url.toExternalForm());
 
         LOGGER.info("Extracting " + packFile.getAbsolutePath() + " -> " + directory.getAbsolutePath());
         ZipExtract zipExtract = new ZipExtract(Files.asByteSource(packFile), directory, name -> {
@@ -70,6 +89,7 @@ public class CurseIntegration {
         File manifestFile = new File(directory, "manifest.json");
         manifest = mapper.readValue(manifestFile, Manifest.class);
         manifestFile.delete();
+        return zipFileInstall;
     }
 
     public void downloadLoaders(File directory) throws Exception {
@@ -146,7 +166,7 @@ public class CurseIntegration {
      * https://www.curseforge.com/minecraft/mc-mods/[projectID]/download/[fileID]
      * https://www.curseforge.com/minecraft/mc-mods/[projectID]/download/[fileID]/files
      */
-    private static URL filterURL(String url) throws MalformedURLException, URISyntaxException {
+    private URL filterURL(String url) throws MalformedURLException, URISyntaxException {
         URI uri = new URI(url);
         if (uri.getHost().endsWith("curseforge.com")) {
             if (uri.getPath().startsWith("/minecraft/modpacks/") && !uri.getPath().endsWith("/file")) {
@@ -161,5 +181,47 @@ public class CurseIntegration {
         }
 
         return uri.toURL();
+    }
+
+    private URL resolveURL(URL baseUrl) {
+        URL url = baseUrl;
+        HttpURLConnection connection;
+        for (int index = 0; index < 10; index++) {
+            try {
+                connection = createHttpURLConnection(url);
+                connection.setInstanceFollowRedirects(false);
+                int responseCode = connection.getResponseCode();
+
+                if (responseCode == 200) {
+                    return url;
+                }
+
+                if (responseCode == HttpURLConnection.HTTP_MOVED_PERM
+                        || responseCode == HttpURLConnection.HTTP_MOVED_TEMP
+                        || responseCode == 307) {
+                    String location = URLDecoder.decode(connection.getHeaderField("Location"), "UTF-8");
+                    URL nextUrl = new URL(url, location);
+
+                    LOGGER.info("Redirect (" + responseCode + "): " + url.toExternalForm() + " -> " + nextUrl.toExternalForm());
+
+                    url = nextUrl;
+                    if (responseCode == 307) {
+                        return url;
+                    }
+                }
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        }
+
+        return null;
+    }
+
+    private HttpURLConnection createHttpURLConnection(URL url) throws IOException {
+        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+        connection.setConnectTimeout(15000);
+        connection.setReadTimeout(15000);
+        connection.setRequestProperty("User-Agent", Toolbox.USER_AGENT);
+        return connection;
     }
 }
