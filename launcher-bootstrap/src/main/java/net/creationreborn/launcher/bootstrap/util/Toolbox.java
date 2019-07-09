@@ -98,6 +98,11 @@ public class Toolbox {
 
     public static void setAppName(String name) {
         try {
+            String currentDesktop = System.getenv("XDG_CURRENT_DESKTOP");
+            if (currentDesktop == null || !currentDesktop.equalsIgnoreCase("GNOME")) {
+                return;
+            }
+
             Toolkit toolkit = Toolkit.getDefaultToolkit();
 
             Field field = toolkit.getClass().getDeclaredField("awtAppClassName");
