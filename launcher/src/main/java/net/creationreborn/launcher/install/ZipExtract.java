@@ -24,7 +24,6 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.nio.file.Files;
 import java.util.function.Function;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
@@ -57,21 +56,18 @@ public class ZipExtract implements Runnable {
                 }
 
                 String name = function.apply(entry.getName());
-                if (name != null) {
-                    File file = new File(destination, name);
-                    file.getParentFile().mkdirs();
-                    writeEntry(inputStream, file);
+                if (name == null) {
+                    continue;
+                }
+
+                File file = new File(destination, name);
+                file.getParentFile().mkdirs();
+                try (OutputStream outputStream = new BufferedOutputStream(new FileOutputStream(file))) {
+                    IOUtils.copy(inputStream, outputStream);
                 }
             }
         } catch (IOException ex) {
             throw new RuntimeException(ex);
-        }
-    }
-
-    private void writeEntry(ZipInputStream inputStream, File file) throws IOException {
-        Files.createDirectories(file.getParentFile().toPath());
-        try (OutputStream outputStream = new BufferedOutputStream(new FileOutputStream(file))) {
-            IOUtils.copy(inputStream, outputStream);
         }
     }
 

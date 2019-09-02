@@ -19,12 +19,18 @@ package net.creationreborn.launcher.install;
 import com.google.common.io.Files;
 import com.skcraft.launcher.install.InstallLog;
 import com.skcraft.launcher.install.InstallTask;
+import org.apache.commons.io.IOUtils;
 
+import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.util.function.Function;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
 
 import static com.skcraft.launcher.util.SharedLocale.tr;
 
@@ -50,10 +56,31 @@ public class InstallLogZipExtract implements InstallTask {
     @Override
     public void execute() throws IOException {
         InstallLogZipExtract.log.log(Level.INFO, "Extracting to {0} (from {1})...", new Object[]{to.getAbsoluteFile(), from.getName()});
-        to.getParentFile().mkdirs();
-        ZipExtract zipExtract = new ZipExtract(Files.asByteSource(from), to, function);
-        zipExtract.run();
-        installLog.add(to, to);
+        try (ZipInputStream inputStream = new ZipInputStream(Files.asByteSource(from).openBufferedStream())) {
+            to.getParentFile().mkdirs();
+            ZipEntry entry;
+
+            while ((entry = inputStream.getNextEntry()) != null) {
+                if (entry.isDirectory()) {
+                    continue;
+                }
+
+                String name = function.apply(entry.getName());
+                if (name == null) {
+                    continue;
+                }
+
+                File file = new File(to, name);
+                file.getParentFile().mkdirs();
+                try (OutputStream outputStream = new BufferedOutputStream(new FileOutputStream(file))) {
+                    IOUtils.copy(inputStream, outputStream);
+                }
+
+                installLog.add(file, file);
+            }
+        } catch (IOException ex) {
+            throw new RuntimeException(ex);
+        }
     }
 
     @Override
