@@ -74,15 +74,16 @@ public class ClientFileCollector extends DirectoryWalker {
             location = hash.substring(0, 2) + "/" + hash.substring(2, 4) + "/" + hash;
         }
 
-        File destinationPath = new File(destination, location);
         entry.setDestination(to);
         entry.setSize(file.length());
         entry.setUrl(location);
         applicator.apply(entry);
-        destinationPath.getParentFile().mkdirs();
+
         LOGGER.info(String.format("Adding %s from %s...", relPath, file.getAbsolutePath()));
         if (copy) {
+            File destinationPath = new File(destination, location);
             Files.copy(file, destinationPath);
+            destinationPath.getParentFile().mkdirs();
         }
 
         manifest.getTasks().add(entry);
