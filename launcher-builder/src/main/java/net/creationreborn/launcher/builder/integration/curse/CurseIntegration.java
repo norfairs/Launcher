@@ -17,6 +17,7 @@
 package net.creationreborn.launcher.builder.integration.curse;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.io.CharStreams;
 import com.google.common.io.Files;
 import com.skcraft.launcher.model.modpack.ManifestEntry;
 import com.skcraft.launcher.util.HttpRequest;
@@ -33,12 +34,15 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 import static net.creationreborn.launcher.builder.Builder.LOGGER;
@@ -46,7 +50,8 @@ import static net.creationreborn.launcher.builder.Builder.LOGGER;
 public class CurseIntegration {
 
     // https://twitchappapi.docs.apiary.io/
-    private static final String BASE_URL = "https://addons-ecs.forgesvc.net/api/v2";
+    private static final String API_HOST = "addons-ecs.forgesvc.net";
+    private static final String BASE_URL = "https://" + API_HOST + "/api/v2";
     private static final String FORGE_URL = "https://files.minecraftforge.net/maven";
     private Manifest manifest;
 
@@ -166,17 +171,29 @@ public class CurseIntegration {
      * https://www.curseforge.com/minecraft/mc-mods/[projectID]/download/[fileID]
      * https://www.curseforge.com/minecraft/mc-mods/[projectID]/download/[fileID]/files
      */
-    private URL filterURL(String url) throws MalformedURLException, URISyntaxException {
-        URI uri = new URI(url);
+    private URL filterURL(String source) throws MalformedURLException, URISyntaxException {
+        URI uri = new URI(source);
         if (uri.getHost().endsWith("curseforge.com")) {
             if (uri.getPath().startsWith("/minecraft/modpacks/") && !uri.getPath().endsWith("/file")) {
-                return new URI(
-                        uri.getScheme(),
-                        uri.getAuthority(),
-                        uri.getPath().replace("files", "download") + "/file",
+                String path = uri.getPath()
+                        .replace("minecraft/modpacks", "api/v2/addon")
+                        .replace("files", "file");
+                if (!path.endsWith("/")) {
+                    path += "/";
+                }
+
+                path += "download-url";
+
+                URL url = new URI(
+                        "https",
+                        API_HOST,
+                        path,
                         null,
                         uri.getFragment()
                 ).toURL();
+
+                LOGGER.info("Filtered " + source + " -> " + url.toExternalForm());
+                return url;
             }
         }
 
@@ -193,7 +210,11 @@ public class CurseIntegration {
                 int responseCode = connection.getResponseCode();
 
                 if (responseCode == 200) {
-                    return url;
+                    if (!url.getHost().equals(API_HOST)) {
+                        return url;
+                    }
+
+                    return getAddonUrl(connection.getInputStream());
                 }
 
                 if (responseCode == HttpURLConnection.HTTP_MOVED_PERM
@@ -215,6 +236,12 @@ public class CurseIntegration {
         }
 
         return null;
+    }
+
+    private URL getAddonUrl(InputStream inputStream) throws IOException {
+        try (InputStreamReader reader = new InputStreamReader(inputStream, StandardCharsets.UTF_8)) {
+            return new URL(CharStreams.toString(reader));
+        }
     }
 
     private HttpURLConnection createHttpURLConnection(URL url) throws IOException {
