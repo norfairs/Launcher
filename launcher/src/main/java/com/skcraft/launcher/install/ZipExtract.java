@@ -43,6 +43,10 @@ public class ZipExtract implements Runnable {
             destination.getParentFile().mkdirs();
 
             while ((entry = zis.getNextEntry()) != null) {
+                if (entry.isDirectory()) {
+                    continue;
+                }
+
                 if (matches(entry)) {
                     File file = new File(getDestination(), entry.getName());
                     writeEntry(zis, file);
