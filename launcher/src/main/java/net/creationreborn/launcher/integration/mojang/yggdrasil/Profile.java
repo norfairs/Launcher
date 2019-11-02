@@ -26,10 +26,12 @@ import java.util.Objects;
                 "userId",
                 "createdAt",
                 "suspended",
-                "tokenId",
                 "paid",
-                "migrated"
+                "migrated",
+                "legacy",
+                "tokenId"
         },
+        ignoreUnknown = true,
         allowSetters = true
 )
 public class Profile {
@@ -41,9 +43,12 @@ public class Profile {
     private long createdAt;
     private boolean legacyProfile;
     private boolean suspended;
-    private String tokenId;
     private boolean paid;
     private boolean migrated;
+    private boolean legacy;
+
+    // Unknown
+    private String tokenId;
 
     public String getAgent() {
         return agent;
@@ -101,14 +106,6 @@ public class Profile {
         this.suspended = suspended;
     }
 
-    public String getTokenId() {
-        return tokenId;
-    }
-
-    public void setTokenId(String tokenId) {
-        this.tokenId = tokenId;
-    }
-
     public boolean isPaid() {
         return paid;
     }
@@ -123,6 +120,22 @@ public class Profile {
 
     public void setMigrated(boolean migrated) {
         this.migrated = migrated;
+    }
+
+    public boolean isLegacy() {
+        return legacy;
+    }
+
+    public void setLegacy(boolean legacy) {
+        this.legacy = legacy;
+    }
+
+    public String getTokenId() {
+        return tokenId;
+    }
+
+    public void setTokenId(String tokenId) {
+        this.tokenId = tokenId;
     }
 
     @Override
