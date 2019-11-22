@@ -61,7 +61,12 @@ public class ZipExtract implements Runnable {
                 }
 
                 File file = new File(destination, name);
+                if (file.exists() && !file.canWrite()) {
+                    file.setWritable(true);
+                }
+
                 file.getParentFile().mkdirs();
+                file.createNewFile();
                 try (OutputStream outputStream = new BufferedOutputStream(new FileOutputStream(file))) {
                     IOUtils.copy(inputStream, outputStream);
                 }

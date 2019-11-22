@@ -71,7 +71,12 @@ public class InstallLogZipExtract implements InstallTask {
                 }
 
                 File file = new File(to, name);
+                if (file.exists() && !file.canWrite()) {
+                    file.setWritable(true);
+                }
+
                 file.getParentFile().mkdirs();
+                file.createNewFile();
                 try (OutputStream outputStream = new BufferedOutputStream(new FileOutputStream(file))) {
                     IOUtils.copy(inputStream, outputStream);
                 }
