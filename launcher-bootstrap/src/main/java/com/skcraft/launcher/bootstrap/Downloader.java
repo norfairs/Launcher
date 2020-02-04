@@ -76,7 +76,7 @@ public class Downloader implements Runnable, ProgressObservable {
                     .returnContent()
                     .asString("UTF-8");
 
-            JsonElement jsonElement = new JsonParser().parse(data);
+            JsonElement jsonElement = JsonParser.parseString(data);
             URL url;
 
             if (jsonElement instanceof JsonObject) {
