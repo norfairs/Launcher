@@ -9,7 +9,7 @@ configurations {
 }
 
 dependencies {
-    compile("com.google.code.gson:gson:2.8.5")
+    compile("com.google.code.gson:gson:2.8.6")
     compile("javax.xml.bind:jaxb-api:2.3.1")
 }
 
@@ -28,5 +28,5 @@ processResources {
 }
 
 shadowJar {
-    classifier = null
+    archiveClassifier.set(null)
 }
