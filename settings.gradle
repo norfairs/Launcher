@@ -1,3 +1,4 @@
+rootProject.name = "CRLauncher"
 include "creator-tools"
 include "launcher"
 include "launcher-bootstrap"
