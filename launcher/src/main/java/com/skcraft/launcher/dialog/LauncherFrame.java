@@ -19,6 +19,7 @@ import com.skcraft.launcher.util.SwingExecutor;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.extern.java.Log;
+import net.creationreborn.launcher.integration.analytics.AnalyticsIntegration;
 import net.miginfocom.swing.MigLayout;
 
 import javax.swing.*;
@@ -365,9 +366,15 @@ public class LauncherFrame extends JFrame {
         private final WeakReference<LauncherFrame> frameRef;
         private final Launcher launcher;
 
+        // Creation Reborn
+        private final Instance instance;
+
         private LaunchListenerImpl(LauncherFrame frame) {
             this.frameRef = new WeakReference<LauncherFrame>(frame);
             this.launcher = frame.launcher;
+
+            // Creation Reborn
+            this.instance = frame.launcher.getInstances().get(frame.instancesTable.getSelectedRow());
         }
 
         @Override
@@ -376,6 +383,11 @@ public class LauncherFrame extends JFrame {
             if (frame != null) {
                 frame.instancesModel.update();
             }
+
+            // Creation Reborn
+            if (instance instanceof net.creationreborn.launcher.Instance) {
+                AnalyticsIntegration.install(launcher, (net.creationreborn.launcher.Instance) instance);
+            }
         }
 
         @Override
@@ -383,6 +395,11 @@ public class LauncherFrame extends JFrame {
             LauncherFrame frame = frameRef.get();
             if (frame != null) {
                 frame.dispose();
+            }
+
+            // Creation Reborn
+            if (instance instanceof net.creationreborn.launcher.Instance) {
+                AnalyticsIntegration.play(launcher, (net.creationreborn.launcher.Instance) instance);
             }
         }
 

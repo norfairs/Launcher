@@ -15,7 +15,6 @@ import com.skcraft.launcher.Launcher;
 import com.skcraft.launcher.LauncherException;
 import com.skcraft.launcher.install.Installer;
 import com.skcraft.launcher.model.minecraft.VersionManifest;
-import com.skcraft.launcher.model.modpack.Manifest;
 import com.skcraft.launcher.persistence.Persistence;
 import com.skcraft.launcher.util.HttpRequest;
 import com.skcraft.launcher.util.SharedLocale;
@@ -23,6 +22,7 @@ import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
 import lombok.extern.java.Log;
+import net.creationreborn.launcher.model.modpack.Manifest;
 
 import java.io.File;
 import java.io.IOException;
@@ -190,6 +190,12 @@ public class Updater extends BaseUpdater implements Callable<Instance>, Progress
         instance.setUpdatePending(false);
         instance.setInstalled(true);
         instance.setLocal(true);
+
+        // Creation Reborn
+        if (instance instanceof net.creationreborn.launcher.Instance) {
+            ((net.creationreborn.launcher.Instance) instance).setAnalytics(manifest.getAnalytics());
+        }
+
         Persistence.commitAndForget(instance);
 
         log.log(Level.INFO, instance.getName() +
