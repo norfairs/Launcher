@@ -47,10 +47,10 @@ public class Version {
     private String changelog;
 
     @JsonProperty
-    private int parent;
+    private long parent;
 
     @JsonProperty
-    private int id;
+    private long id;
 
     @JsonProperty
     private String name;
@@ -93,11 +93,11 @@ public class Version {
         return changelog;
     }
 
-    public int getParent() {
+    public long getParent() {
         return parent;
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
@@ -143,7 +143,7 @@ public class Version {
         private boolean optional;
 
         @JsonProperty
-        private int id;
+        private long id;
 
         @JsonProperty
         private String name;
@@ -190,7 +190,7 @@ public class Version {
             return optional;
         }
 
-        public int getId() {
+        public long getId() {
             return id;
         }
 
@@ -213,7 +213,7 @@ public class Version {
         private String version;
 
         @JsonProperty
-        private int id;
+        private long id;
 
         @JsonProperty
         private String name;
@@ -228,7 +228,7 @@ public class Version {
             return version;
         }
 
-        public int getId() {
+        public long getId() {
             return id;
         }
 

@@ -21,7 +21,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class Specs {
 
     @JsonProperty
-    private int id;
+    private long id;
 
     @JsonProperty
     private int minimum;
@@ -29,7 +29,7 @@ public class Specs {
     @JsonProperty
     private int recommended;
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
