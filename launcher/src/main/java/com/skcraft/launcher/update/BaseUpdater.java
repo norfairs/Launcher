@@ -19,7 +19,6 @@ import com.skcraft.launcher.model.minecraft.AssetsIndex;
 import com.skcraft.launcher.model.minecraft.Library;
 import com.skcraft.launcher.model.minecraft.VersionManifest;
 import com.skcraft.launcher.model.modpack.Feature;
-import com.skcraft.launcher.model.modpack.Manifest;
 import com.skcraft.launcher.model.modpack.ManifestEntry;
 import com.skcraft.launcher.persistence.Persistence;
 import com.skcraft.launcher.util.Environment;
@@ -27,6 +26,7 @@ import com.skcraft.launcher.util.HttpRequest;
 import com.skcraft.launcher.util.SharedLocale;
 import lombok.NonNull;
 import lombok.extern.java.Log;
+import net.creationreborn.launcher.model.modpack.Manifest;
 
 import javax.swing.*;
 import java.io.File;

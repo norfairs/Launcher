@@ -18,11 +18,11 @@ package net.creationreborn.launcher.builder;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.skcraft.launcher.builder.BuilderOptions;
-import com.skcraft.launcher.model.modpack.Manifest;
 import com.skcraft.launcher.model.modpack.ManifestEntry;
 import com.skcraft.launcher.util.HttpRequest;
 import net.creationreborn.launcher.builder.integration.creeperhost.CreeperHostIntegration;
 import net.creationreborn.launcher.builder.integration.curse.CurseIntegration;
+import net.creationreborn.launcher.model.modpack.Manifest;
 import net.creationreborn.launcher.util.Toolbox;
 import org.apache.commons.lang3.StringUtils;
 
@@ -84,6 +84,8 @@ public class Builder {
             if (options.getManifestPath().isDirectory()) {
                 options.setManifestPath(new File(options.getManifestPath(), manifest.getName() + ".json"));
             }
+
+            manifest.setAnalytics(creeper.getAnalytics());
 
             List<ManifestEntry> entries = creeper.getEntries();
             LOGGER.info("Adding " + entries.size() + " entries");

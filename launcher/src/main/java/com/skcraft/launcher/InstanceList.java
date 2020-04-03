@@ -16,6 +16,7 @@ import com.skcraft.launcher.util.SharedLocale;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.extern.java.Log;
+import net.creationreborn.launcher.Instance;
 import org.apache.commons.io.filefilter.DirectoryFileFilter;
 
 import java.io.File;

@@ -9,13 +9,13 @@ package com.skcraft.launcher.creator.controller.task;
 import com.google.common.base.Function;
 import com.google.common.base.Optional;
 import com.skcraft.concurrency.ProgressObservable;
-import com.skcraft.launcher.Instance;
 import com.skcraft.launcher.InstanceList;
 import com.skcraft.launcher.Launcher;
 import com.skcraft.launcher.auth.Session;
 import com.skcraft.launcher.launch.LaunchOptions;
 import com.skcraft.launcher.launch.LaunchOptions.UpdatePolicy;
 import com.skcraft.launcher.swing.SwingHelper;
+import net.creationreborn.launcher.Instance;
 
 import java.awt.*;
 import java.util.List;

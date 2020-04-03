@@ -21,6 +21,7 @@ import com.skcraft.launcher.model.modpack.ManifestEntry;
 import com.skcraft.launcher.util.HttpRequest;
 import net.creationreborn.launcher.builder.integration.creeperhost.entity.Modpack;
 import net.creationreborn.launcher.builder.integration.creeperhost.entity.Version;
+import net.creationreborn.launcher.entity.Analytics;
 import net.creationreborn.launcher.model.modpack.FileInstall;
 import net.creationreborn.launcher.util.Toolbox;
 import org.apache.commons.compress.utils.Lists;
@@ -99,6 +100,13 @@ public class CreeperHostIntegration {
                     .expectResponseCode(200)
                     .saveContent(file);
         }
+    }
+
+    public Analytics getAnalytics() {
+        Analytics analytics = new Analytics();
+        analytics.setInstallUrl(BASE_URL + modpack.getId() + "/" + version.getId() + "/install");
+        analytics.setPlayUrl(BASE_URL + modpack.getId() + "/" + version.getId() + "/play");
+        return analytics;
     }
 
     public List<ManifestEntry> getEntries() {

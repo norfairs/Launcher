@@ -22,7 +22,6 @@ import com.skcraft.launcher.LauncherUtils;
 import com.skcraft.launcher.model.loader.InstallProfile;
 import com.skcraft.launcher.model.minecraft.Library;
 import com.skcraft.launcher.model.minecraft.VersionManifest;
-import com.skcraft.launcher.model.modpack.Manifest;
 import com.skcraft.launcher.util.Environment;
 import com.skcraft.launcher.util.HttpRequest;
 import com.skcraft.launcher.util.SimpleLogFormatter;
@@ -31,6 +30,7 @@ import lombok.NonNull;
 import lombok.extern.java.Log;
 import net.creationreborn.launcher.builder.Builder;
 import net.creationreborn.launcher.builder.ClientFileCollector;
+import net.creationreborn.launcher.model.modpack.Manifest;
 
 import java.io.*;
 import java.net.URL;

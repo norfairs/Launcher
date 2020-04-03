@@ -22,9 +22,9 @@ import com.google.common.io.Files;
 import com.skcraft.launcher.builder.DirectoryWalker;
 import com.skcraft.launcher.builder.FileInfoScanner;
 import com.skcraft.launcher.builder.PropertiesApplicator;
-import com.skcraft.launcher.model.modpack.Manifest;
 import lombok.NonNull;
 import net.creationreborn.launcher.model.modpack.FileInstall;
+import net.creationreborn.launcher.model.modpack.Manifest;
 import org.apache.commons.io.FilenameUtils;
 
 import java.io.File;
