@@ -38,10 +38,10 @@ public class Modpack {
     private List<Version> versions;
 
     @JsonProperty
-    private int installs;
+    private long installs;
 
     @JsonProperty
-    private int plays;
+    private long plays;
 
     @JsonProperty
     private boolean featured;
@@ -53,7 +53,7 @@ public class Modpack {
     private String status;
 
     @JsonProperty
-    private int id;
+    private long id;
 
     @JsonProperty
     private String name;
@@ -87,11 +87,11 @@ public class Modpack {
         return versions;
     }
 
-    public int getInstalls() {
+    public long getInstalls() {
         return installs;
     }
 
-    public int getPlays() {
+    public long getPlays() {
         return plays;
     }
 
@@ -107,7 +107,7 @@ public class Modpack {
         return status;
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
@@ -145,7 +145,7 @@ public class Modpack {
         private long size;
 
         @JsonProperty
-        private int id;
+        private long id;
 
         @JsonProperty
         private String type;
@@ -173,7 +173,7 @@ public class Modpack {
             return size;
         }
 
-        public int getId() {
+        public long getId() {
             return id;
         }
 
@@ -192,7 +192,7 @@ public class Modpack {
         private String website;
 
         @JsonProperty
-        private int id;
+        private long id;
 
         @JsonProperty
         private String name;
@@ -207,7 +207,7 @@ public class Modpack {
             return website;
         }
 
-        public int getId() {
+        public long getId() {
             return id;
         }
 
@@ -230,7 +230,7 @@ public class Modpack {
         private Specs specs;
 
         @JsonProperty
-        private int id;
+        private long id;
 
         @JsonProperty
         private String name;
@@ -245,7 +245,7 @@ public class Modpack {
             return specs;
         }
 
-        public int getId() {
+        public long getId() {
             return id;
         }
 
