@@ -21,6 +21,7 @@ import com.skcraft.launcher.builder.BuilderOptions;
 import com.skcraft.launcher.model.modpack.Manifest;
 import com.skcraft.launcher.model.modpack.ManifestEntry;
 import com.skcraft.launcher.util.HttpRequest;
+import net.creationreborn.launcher.builder.integration.creeperhost.CreeperHostIntegration;
 import net.creationreborn.launcher.builder.integration.curse.CurseIntegration;
 import net.creationreborn.launcher.util.Toolbox;
 import org.apache.commons.lang3.StringUtils;
@@ -56,8 +57,39 @@ public class Builder {
             manifest.setBaseUrl(HttpRequest.url(options.getBaseUrl()));
         }
 
+        if (StringUtils.isNotBlank(options.getCreeper())) {
+            processCreeper(manifest, options.getCreeper());
+        }
+
         if (StringUtils.isNotBlank(options.getCurse())) {
             processCurse(manifest, options.getCurse());
+        }
+    }
+
+    public void processCreeper(Manifest manifest, String source) {
+        try {
+            CreeperHostIntegration creeper = new CreeperHostIntegration();
+            creeper.prepare(options.getOutputPath(), mapper, source);
+            creeper.downloadLoaders(options.getLoadersDir());
+
+            manifest.setName(Toolbox.filter(creeper.getName())
+                    .toLowerCase()
+                    .trim()
+                    .replace(' ', '_')
+                    .replace('.', '_')
+            );
+
+            manifest.setTitle(creeper.getName().trim());
+            manifest.setVersion(creeper.getVersion());
+            if (options.getManifestPath().isDirectory()) {
+                options.setManifestPath(new File(options.getManifestPath(), manifest.getName() + ".json"));
+            }
+
+            List<ManifestEntry> entries = creeper.getEntries();
+            LOGGER.info("Adding " + entries.size() + " entries");
+            manifest.getTasks().addAll(entries);
+        } catch (Exception ex) {
+            throw new RuntimeException(ex);
         }
     }
 

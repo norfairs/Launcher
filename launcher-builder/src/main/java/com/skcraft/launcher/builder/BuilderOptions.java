@@ -70,6 +70,8 @@ public class BuilderOptions {
     // Creation Reborn
     @Parameter(names = "--base-url")
     private String baseUrl;
+    @Parameter(names = {"--creeperhost", "--creeper", "--feedthebeast", "--ftb"})
+    private String creeper;
     @Parameter(names = {"--curseforge", "--curse"})
     private String curse;
 
