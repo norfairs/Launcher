@@ -12,6 +12,7 @@ import com.skcraft.launcher.util.HttpRequest;
 import com.skcraft.launcher.util.SharedLocale;
 import lombok.NonNull;
 import lombok.extern.java.Log;
+import net.creationreborn.launcher.LauncherArguments;
 
 import java.net.URL;
 import java.util.concurrent.Callable;
@@ -34,7 +35,14 @@ public class UpdateChecker implements Callable<URL> {
         try {
             UpdateChecker.log.info("Checking for update...");
 
-            URL url = HttpRequest.url(launcher.getProperties().getProperty("selfUpdateUrl"));
+            // Creation Reborn
+            // URL url = HttpRequest.url(launcher.getProperties().getProperty("selfUpdateUrl"));
+            URL url;
+            if (LauncherArguments.getInstance().isDevelopmentChannel()) {
+                url = HttpRequest.url(launcher.getProperties().getProperty("developmentUpdateUrl"));
+            } else {
+                url = HttpRequest.url(launcher.getProperties().getProperty("selfUpdateUrl"));
+            }
 
             LatestVersionInfo versionInfo = HttpRequest.get(url)
                     .execute()

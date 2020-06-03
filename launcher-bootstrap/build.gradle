@@ -13,9 +13,30 @@ dependencies {
     compile("javax.xml.bind:jaxb-api:2.3.1")
 }
 
+task devJar(type: Jar, dependsOn: shadowJar) {
+    outputs.upToDateWhen { false }
+    doFirst {
+        archiveClassifier.set("DEV")
+        manifest {
+            attributes(
+                    "Main-Class": "com.skcraft.launcher.Bootstrap",
+                    "Channel": "development"
+            )
+        }
+        from zipTree(shadowJar.getArchiveFile())
+    }
+}
+
+artifacts {
+    archives devJar
+}
+
 jar {
     manifest {
-        attributes("Main-Class": "com.skcraft.launcher.Bootstrap")
+        attributes(
+                "Main-Class": "com.skcraft.launcher.Bootstrap",
+                "Channel": "release"
+        )
     }
 }
 

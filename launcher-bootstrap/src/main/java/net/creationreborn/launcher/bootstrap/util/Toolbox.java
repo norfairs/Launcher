@@ -16,23 +16,27 @@
 
 package net.creationreborn.launcher.bootstrap.util;
 
+import com.skcraft.launcher.Bootstrap;
 import com.skcraft.launcher.bootstrap.SharedLocale;
 import com.skcraft.launcher.bootstrap.SwingHelper;
 
 import java.awt.Toolkit;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Comparator;
+import java.util.jar.Manifest;
 import java.util.logging.Logger;
 
 public class Toolbox {
 
     public static final String USER_AGENT = "Mozilla/5.0 (Java) CRLauncher";
     private static final Logger LOGGER = Logger.getLogger(Toolbox.class.getName());
+    public static final String CHANNEL = getChannel();
 
     public static boolean containsIgnoreCase(String string, String searchString) {
         return string.toLowerCase().contains(searchString.toLowerCase());
@@ -75,6 +79,14 @@ public class Toolbox {
         }
     }
 
+    public static File getBinariesDirectory(File baseDir) {
+        if (isDevelopmentChannel()) {
+            return new File(baseDir, "launcher-development");
+        }
+
+        return new File(baseDir, "launcher");
+    }
+
     public static Path getPath(String name) {
         String osName = System.getProperty("os.name");
         String userHome = System.getProperty("user.home");
@@ -96,6 +108,10 @@ public class Toolbox {
         return Paths.get(name);
     }
 
+    public static boolean isDevelopmentChannel() {
+        return CHANNEL.equals("development");
+    }
+
     public static void setAppName(String name) {
         try {
             String currentDesktop = System.getenv("XDG_CURRENT_DESKTOP");
@@ -111,5 +127,20 @@ public class Toolbox {
         } catch (Exception ex) {
             LOGGER.warning("Failed to set awtAppClassName");
         }
+    }
+
+    private static String getChannel() {
+        try (InputStream inputStream = Bootstrap.class.getResourceAsStream("/META-INF/MANIFEST.MF")) {
+            Manifest manifest = new Manifest(inputStream);
+
+            String channel = manifest.getMainAttributes().getValue("Channel");
+            if (channel != null) {
+                return channel;
+            }
+        } catch (Exception ex) {
+            LOGGER.warning("Failed to read Manifest");
+        }
+
+        return "release";
     }
 }
