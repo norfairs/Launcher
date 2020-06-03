@@ -67,7 +67,9 @@ public class Bootstrap {
 
         this.baseDir = baseDir;
         this.portable = portable;
-        this.binariesDir = new File(baseDir, "launcher");
+        // Creation Reborn
+        // this.binariesDir = new File(baseDir, "launcher");
+        this.binariesDir = Toolbox.getBinariesDirectory(baseDir);
         this.originalArgs = args;
 
         binariesDir.mkdirs();
@@ -162,13 +164,19 @@ public class Bootstrap {
                     "--dir",
                     baseDir.getAbsolutePath(),
                     "--bootstrap-version",
-                    String.valueOf(BOOTSTRAP_VERSION) };
+                    String.valueOf(BOOTSTRAP_VERSION),
+                    "--channel",
+                    Toolbox.CHANNEL,
+            };
         } else {
             launcherArgs = new String[] {
                     "--dir",
                     baseDir.getAbsolutePath(),
                     "--bootstrap-version",
-                    String.valueOf(BOOTSTRAP_VERSION)  };
+                    String.valueOf(BOOTSTRAP_VERSION),
+                    "--channel",
+                    Toolbox.CHANNEL,
+            };
         }
 
         String[] args = new String[originalArgs.length + launcherArgs.length];
