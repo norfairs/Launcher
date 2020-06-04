@@ -23,13 +23,11 @@ import com.skcraft.launcher.bootstrap.SwingHelper;
 import java.awt.Toolkit;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Comparator;
-import java.util.jar.Manifest;
 import java.util.logging.Logger;
 
 public class Toolbox {
@@ -130,15 +128,9 @@ public class Toolbox {
     }
 
     private static String getChannel() {
-        try (InputStream inputStream = Bootstrap.class.getResourceAsStream("/META-INF/MANIFEST.MF")) {
-            Manifest manifest = new Manifest(inputStream);
-
-            String channel = manifest.getMainAttributes().getValue("Channel");
-            if (channel != null) {
-                return channel;
-            }
-        } catch (Exception ex) {
-            LOGGER.warning("Failed to read Manifest");
+        String channel = Bootstrap.class.getPackage().getSpecificationTitle();
+        if (channel != null) {
+            return channel;
         }
 
         return "release";
