@@ -175,7 +175,7 @@ public class Runner implements Callable<Process>, ProgressObservable {
                 builder.getFlags().add("-Xdock:name=Minecraft");
             }
 
-            builder.getFlags().add("-XstartOnFirstThread");
+            // builder.getFlags().add("-XstartOnFirstThread");
         }
 
         // Windows arguments
