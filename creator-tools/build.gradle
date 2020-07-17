@@ -17,7 +17,7 @@ configurations {
 dependencies {
     compile(project(path: ":launcher-builder"))
     compile("com.jidesoft:jide-oss:3.6.18")
-    compile("org.eclipse.jetty:jetty-server:9.4.26.v20200117")
+    compile("org.eclipse.jetty:jetty-server:9.4.30.v20200611")
 }
 
 jar {
