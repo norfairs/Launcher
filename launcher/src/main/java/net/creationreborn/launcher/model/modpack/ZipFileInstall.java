@@ -23,6 +23,7 @@ import com.google.common.collect.Maps;
 import com.skcraft.launcher.install.InstallLog;
 import com.skcraft.launcher.install.Installer;
 import com.skcraft.launcher.install.UpdateCache;
+import net.creationreborn.launcher.install.FileDeleter;
 import net.creationreborn.launcher.install.InstallLogZipExtract;
 
 import java.io.File;
@@ -61,6 +62,7 @@ public class ZipFileInstall extends FileInstall {
 
                 return null;
             }));
+            installer.queue(new FileDeleter(tempFile));
         } else {
             log.add(getDestination(), getDestination());
         }
